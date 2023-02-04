@@ -1,5 +1,7 @@
 using Accounts.Application.Handlers;
+using Accounts.Application.Providers;
 using Accounts.Core.Handlers;
+using Accounts.Core.Providers;
 using Accounts.Core.Repositories;
 using Accounts.Core.Repositories.Base;
 using Accounts.Infrastructure.Repositories;
@@ -11,6 +13,8 @@ namespace Accounts.API.Configurations
     {
         public static void AddDependencyInjectionConfiguration(this IServiceCollection services)
         {
+            services.AddProviderDependencyInjection();
+            
             services.AddRepositoryDependencyInjection();
 
             services.AddHandlerDependencyInjection();
@@ -34,6 +38,11 @@ namespace Accounts.API.Configurations
             services.AddScoped<IProfileRepository,ProfileRepository>();
             services.AddScoped<IRoleRepository,RoleRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+        }
+
+        private static void AddProviderDependencyInjection(this IServiceCollection services)
+        {
+            services.AddScoped<IPasswordProvider, PasswordProvider>();
         }
     }
 }

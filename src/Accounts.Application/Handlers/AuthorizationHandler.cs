@@ -1,7 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using Accounts.Core.DTO.Requests;
 using Accounts.Core.Handlers;
+using Accounts.Core.Providers;
 using Accounts.Core.Repositories;
 
 namespace Accounts.Application.Handlers
@@ -11,15 +10,18 @@ namespace Accounts.Application.Handlers
         private readonly IUserRepository _userRepository;
         private readonly IUserHandler _userHandler;
         private readonly IUserProfileHandler _userProfileHandler;
+        private readonly IPasswordProvider _passwordProvider;
 
         public AuthorizationHandler(
             IUserRepository userRepository,
             IUserHandler userHandler,
-            IUserProfileHandler userProfileHandler)
+            IUserProfileHandler userProfileHandler,
+            IPasswordProvider passwordProvider)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _userHandler = userHandler ?? throw new ArgumentNullException(nameof(userHandler));
             _userProfileHandler = userProfileHandler ?? throw new ArgumentNullException(nameof(userProfileHandler));
+            _passwordProvider = passwordProvider ?? throw new ArgumentNullException(nameof(passwordProvider));
         }
 
         public async Task RegisterAsync(RegisterRequest request)
@@ -37,7 +39,7 @@ namespace Accounts.Application.Handlers
         {
             var userDb = await _userRepository.GetByEmail(request.Email);
 
-            if(userDb == null || userDb.PasswordHash != BCrypt.Net.BCrypt.HashPassword(request.Password + userDb.Salt))
+            if(userDb == null || userDb.PasswordHash != _passwordProvider.HashPassword(request.Password, userDb.Salt))
                 throw new Exception("User or password invalid");
         }
     }

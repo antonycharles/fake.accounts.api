@@ -1,11 +1,10 @@
-using System;
-using System.Threading.Tasks;
 using Accounts.Application.Exceptions;
 using Accounts.Application.Mappers.UserMappers;
 using Accounts.Core.DTO.Requests;
 using Accounts.Core.DTO.Responses;
 using Accounts.Core.Enums;
 using Accounts.Core.Handlers;
+using Accounts.Core.Providers;
 using Accounts.Core.Repositories;
 
 namespace Accounts.Application.Handlers
@@ -13,10 +12,12 @@ namespace Accounts.Application.Handlers
     public class UserHandler : IUserHandler
     {
         private readonly IUserRepository _userRepository;
-        
-        public UserHandler(IUserRepository userRepository)
+        private readonly IPasswordProvider _passwordProvider;
+
+        public UserHandler(IUserRepository userRepository, IPasswordProvider passwordProvider = null)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _passwordProvider = passwordProvider ?? throw new ArgumentNullException(nameof(passwordProvider));
         }
 
         public async Task<UserResponse> CreateAsync(UserRequest userRequest)
@@ -26,8 +27,8 @@ namespace Accounts.Application.Handlers
             if(userExist)
                 throw new NotFoundException("User already exists");
 
-            var salt = BCrypt.Net.BCrypt.GenerateSalt();
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(userRequest.Password + salt);
+            var salt = _passwordProvider.GenerateSalt();
+            string passwordHash = _passwordProvider.HashPassword(userRequest.Password, salt);
 
             var user = userRequest.ToUser();
             user.PasswordHash = passwordHash;
