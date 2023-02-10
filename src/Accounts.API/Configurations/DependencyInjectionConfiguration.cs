@@ -22,7 +22,7 @@ namespace Accounts.API.Configurations
 
         private static void AddHandlerDependencyInjection(this IServiceCollection services)
         {
-            services.AddScoped<IAuthorizationHandler,AuthorizationHandler>();
+            services.AddScoped<IUserAuthorizationHandler,UserAuthorizationHandler>();
             services.AddScoped<IUserHandler,UserHandler>();
             services.AddScoped<IUserProfileHandler, UserProfileHandler>();
            // services.AddScoped<AppHandler>();

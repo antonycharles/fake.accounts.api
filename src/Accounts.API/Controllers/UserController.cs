@@ -8,11 +8,11 @@ namespace Accounts.API.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IAuthorizationHandler _authorizationHandler;
+    private readonly IUserAuthorizationHandler _userAuthorizationHandler;
     
-    public UserController(IAuthorizationHandler authorizationHandler)
+    public UserController(IUserAuthorizationHandler authorizationHandler)
     {
-        _authorizationHandler = authorizationHandler ?? throw new ArgumentNullException(nameof(authorizationHandler));
+        _userAuthorizationHandler = authorizationHandler ?? throw new ArgumentNullException(nameof(authorizationHandler));
     }
 
     [HttpPost]
@@ -21,7 +21,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _authorizationHandler.RegisterAsync(request);
+            await _userAuthorizationHandler.RegisterAsync(request);
             return Created("",new{});
         }
         catch(Exception e)
