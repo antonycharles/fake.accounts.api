@@ -25,7 +25,7 @@ namespace Accounts.Application.Handlers
             var userExist = await _userRepository.AnyAsync(w => w.Email == userRequest.Email);
              
             if(userExist)
-                throw new NotFoundException("User already exists");
+                throw new ConflictException("User already exists");
 
             var salt = _passwordProvider.GenerateSalt();
             string passwordHash = _passwordProvider.HashPassword(userRequest.Password, salt);

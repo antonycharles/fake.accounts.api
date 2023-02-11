@@ -22,6 +22,9 @@ namespace Accounts.API.Configurations
 
         private static void AddHandlerDependencyInjection(this IServiceCollection services)
         {
+            //GERA-COMMANDS-ADD-HANDLER
+            services.AddSingleton<ITokenKeyHandler,TokenKeyHandler>();
+            services.AddScoped<ITokenHandler,TokenHandler>();
             services.AddScoped<IUserAuthorizationHandler,UserAuthorizationHandler>();
             services.AddScoped<IUserHandler,UserHandler>();
             services.AddScoped<IUserProfileHandler, UserProfileHandler>();

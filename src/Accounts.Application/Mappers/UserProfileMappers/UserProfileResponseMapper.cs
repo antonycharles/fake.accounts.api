@@ -9,5 +9,6 @@ namespace Accounts.Application.Mappers.UserProfileMappers
             PrifileId = entity.ProfileId,
             UserId = entity.UserId
         };
+        
     }
 }
