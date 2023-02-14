@@ -16,7 +16,7 @@ public class UserAuthenticationController : ControllerBase
         _userAuthorizationHandler = authorizationHandler ?? throw new ArgumentNullException(nameof(authorizationHandler));
     }
 
-    [HttpPost("/login")]
+    [HttpPost("login")]
     [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -38,7 +38,7 @@ public class UserAuthenticationController : ControllerBase
     }
 
 
-    [HttpPost("/signup")]
+    [HttpPost("ssignup")]
     [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

@@ -27,8 +27,10 @@ namespace Accounts.Application.Handlers
             };
         }
 
-        public JsonWebKey GetPublicKey()
+        public IList<JsonWebKey> GetPublicKey()
         {
+            List<JsonWebKey> publicKeys = new List<JsonWebKey>();
+
             var key = GetKey();
 
             var parameters = key.ECDsa.ExportParameters(true);
@@ -45,7 +47,9 @@ namespace Accounts.Application.Handlers
                 Alg = "ES256"
             };
 
-            return jwk;
+            publicKeys.Add(jwk);
+
+            return publicKeys;
         }
     }
 }
